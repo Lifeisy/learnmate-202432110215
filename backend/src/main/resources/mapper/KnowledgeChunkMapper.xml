@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnmate.ai.mapper.KnowledgeChunkMapper">
+
+    <resultMap id="ChunkResultMap" type="com.learnmate.ai.entity.KnowledgeChunk">
+        <id property="id" column="id"/>
+        <result property="docTitle" column="doc_title"/>
+        <result property="section" column="section"/>
+        <result property="content" column="content"/>
+        <result property="embedding" column="embedding"/>
+    </resultMap>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM knowledge_chunk
+    </select>
+
+    <insert id="insert" parameterType="com.learnmate.ai.entity.KnowledgeChunk"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO knowledge_chunk (doc_title, section, content, embedding)
+        VALUES (#{docTitle}, #{section}, #{content}, #{embedding})
+    </insert>
+
+    <select id="findAll" resultMap="ChunkResultMap">
+        SELECT id, doc_title, section, content, embedding FROM knowledge_chunk ORDER BY id
+    </select>
+</mapper>

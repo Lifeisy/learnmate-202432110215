@@ -1,0 +1,26 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: learnmate-mysql
+    environment:
+      MYSQL_DATABASE: learnmate
+      MYSQL_USER: learnmate
+      MYSQL_PASSWORD: LearnMate@2026
+      MYSQL_ROOT_PASSWORD: Root@2026
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+    volumes:
+      - learnmate-mysql:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pRoot@2026"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  learnmate-mysql:

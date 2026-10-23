@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learnmate.user.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="com.learnmate.user.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="passwordHash" column="password_hash"/>
+        <result property="displayName" column="display_name"/>
+        <result property="role" column="role"/>
+        <result property="enabled" column="enabled"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <sql id="columns">
+        id, username, password_hash, display_name, role, enabled, created_at
+    </sql>
+
+    <select id="findAll" resultMap="UserResultMap">
+        SELECT <include refid="columns"/>
+        FROM sys_user
+        <where>
+            <if test="keyword != null and keyword != ''">
+                username LIKE CONCAT('%', #{keyword}, '%')
+                OR display_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultMap="UserResultMap">
+        SELECT <include refid="columns"/> FROM sys_user WHERE id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="UserResultMap">
+        SELECT <include refid="columns"/> FROM sys_user WHERE username = #{username}
+    </select>
+
+    <insert id="insert" parameterType="com.learnmate.user.entity.User"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user (username, password_hash, display_name, role, enabled)
+        VALUES (#{username}, #{passwordHash}, #{displayName}, #{role}, #{enabled})
+    </insert>
+
+    <update id="update" parameterType="com.learnmate.user.entity.User">
+        UPDATE sys_user
+        SET display_name = #{displayName},
+            role = #{role},
+            enabled = #{enabled},
+            password_hash = #{passwordHash}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM sys_user WHERE id = #{id}
+    </delete>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM sys_user
+    </select>
+
+    <select id="countByRole" resultType="int">
+        SELECT COUNT(*) FROM sys_user WHERE role = #{role}
+    </select>
+</mapper>

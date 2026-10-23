@@ -1,0 +1,38 @@
+# Java / Maven
+backend/target/
+backend/data/
+.m2repo/
+*.log
+*.class
+
+# Node
+frontend/node_modules/
+frontend/dist/
+tools/node_modules/
+.npm-cache/
+.pylibs/
+
+# Report preview / LibreOffice profiles
+docs/reports/preview/
+docs/reports/combined-preview/
+docs/reports/final/
+docs/reports/source/
+docs/template/
+.lo-*/
+
+# Browser automation
+.edge-*/
+.edge-profile/
+.edge-cdp/
+.edge-cdp2/
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Local secrets
+.env
+*.local

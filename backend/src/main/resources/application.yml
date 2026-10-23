@@ -1,0 +1,69 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  application:
+    name: learnmate
+  profiles:
+    default: h2
+  datasource:
+    # 默认用内存库，重启后数据重置；持久化改用 mysql
+    url: jdbc:h2:mem:learnmate;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+  jackson:
+    default-property-inclusion: non_null
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.learnmate
+  configuration:
+    map-underscore-to-camel-case: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs
+
+learnmate:
+  jwt:
+    # 部署时用环境变量覆盖
+    secret: ${JWT_SECRET:learnmate-training-secret-key-change-me-2026-0123456789}
+    expire-minutes: 120
+    issuer: learnmate
+  ai:
+    enabled: ${LLM_ENABLED:false}
+    base-url: ${LLM_BASE_URL:https://api.deepseek.com}
+    api-key: ${LLM_API_KEY:}
+    model: ${LLM_MODEL:deepseek-chat}
+    timeout-seconds: 30
+    temperature: 0.2
+  rag:
+    top-k: 4
+    # 低于阈值时不返回检索结果
+    min-score: 0.30
+    chunk-size: 320
+
+logging:
+  level:
+    root: INFO
+    com.learnmate: INFO
+    org.springframework.security: WARN

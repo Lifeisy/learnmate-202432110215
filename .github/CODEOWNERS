@@ -1,0 +1,6 @@
+# 默认评审人（实训项目由本人担任）
+* @liyao
+
+/backend/src/main/java/com/learnmate/auth/ @liyao
+/backend/src/main/java/com/learnmate/ai/ @liyao
+/.github/workflows/ @liyao
